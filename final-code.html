@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Makeup Shop</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    .product-parent {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .product-container,
+    .cart-item {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      width: 200px;
+    }
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .add-button {
+      background: pink;
+    }
+
+    .remove,
+    #clear-cart {
+      background: crimson;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Makeup Products</h1>
+
+  <p>
+    🛒 Cart Items:
+    <span id="cart-count">0</span>
+  </p>
+
+  <div id="product-parent" class="product-parent"></div>
+
+  <hr>
+
+  <h2>Shopping Cart</h2>
+
+  <div id="cart-container">
+    <p>Your cart is empty.</p>
+  </div>
+
+  <h3>Total: ₱<span id="cart-total">0</span></h3>
+
+  <button id="clear-cart">Clear Cart</button>
+
+  <script>
+    const products = [
+      { id: 1, name: "Lipstick", price: 350 },
+      { id: 2, name: "Foundation", price: 599 },
+      { id: 3, name: "Mascara", price: 450 },
+      { id: 4, name: "Blush", price: 320 }
+    ];
+
+    let cart = [];
+
+    const productParent = document.getElementById("product-parent");
+    const cartContainer = document.getElementById("cart-container");
+    const total = document.getElementById("cart-total");
+    const count = document.getElementById("cart-count");
+
+    products.forEach((p) => {
+      productParent.innerHTML += `
+        <div class="product-container">
+          <h3>${p.name}</h3>
+          <p>₱${p.price}</p>
+
+          <button onclick="addToCart(${p.id})">
+            Add to Cart
+          </button>
+        </div>
+      `;
+    });
+
+    function addToCart(id) {
+
+      let item = cart.find((p) => p.id === id);
+
+      if (item) {
+        item.qty++;
+      } else {
+
+        let product = products.find((p) => p.id === id);
+
+        cart.push({
+          ...product,
+          qty: 1
+        });
+      }
+
+      showCart();
+    }
+
+    function showCart() {
+
+      cartContainer.innerHTML = "";
+
+      let cartTotal = 0;
+      let itemCount = 0;
+
+      cart.forEach((item) => {
+
+        let sub = item.price * item.qty;
+
+        cartTotal += sub;
+
+        itemCount += item.qty;
+
+        cartContainer.innerHTML += `
+          <div class="cart-item">
+
+            <h4>${item.name}</h4>
+
+            <p>₱${item.price}</p>
+
+            <p>Qty: ${item.qty}</p>
+
+            <p>Subtotal: ₱${sub}</p>
+
+            <button onclick="item.qty++; showCart()">
+              +
+            </button>
+
+            <button onclick="item.qty--; if(item.qty==0) removeItem(${item.id}); showCart()">
+              -
+            </button>
+
+            <button class="remove" onclick="removeItem(${item.id})">
+              Remove
+            </button>
+
+          </div>
+        `;
+      });
+
+      total.innerText = cartTotal;
+
+      count.innerText = itemCount;
+
+      if (cart.length === 0) {
+        cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+      }
+    }
+
+    function removeItem(id) {
+
+      cart = cart.filter((item) => item.id !== id);
+
+      showCart();
+    }
+
+    document.getElementById("clear-cart").onclick = () => {
+
+      cart = [];
+
+      showCart();
+    };
+  </script>
+
+</body>
+</html>

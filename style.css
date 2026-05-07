@@ -1,0 +1,45 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #f4f4f4;
+}
+
+.product-parent {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.product-container,
+.cart-item {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 200px;
+}
+
+button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.add-button {
+  background: pink;
+}
+
+.increase {
+  background: lightgreen;
+}
+
+.decrease {
+  background: orange;
+}
+
+.remove,
+#clear-cart {
+  background: crimson;
+  color: white;
+}
